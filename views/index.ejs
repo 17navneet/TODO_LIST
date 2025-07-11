@@ -1,0 +1,45 @@
+<%- include('partials/header.ejs') %>
+
+    <div class="box" id="heading"><h1><%=listTitle%></h1></div>
+    <div class="box">
+        <% listItems.forEach(item => { %>
+            <div class="item">
+                <form action="/delete" method="post">
+                    <input type="checkbox" id="item<%=item.id%>" name="deleteItem" value="<%= item.id %>" onchange="this.form.submit()">
+                </form>
+
+                <p id="title<%= item.id %>"><%= item.title %></p>
+
+                <form class="edit-form" action="/edit" method="post">
+                    <input type="hidden" name="updatedItemId" value="<%= item.id %>" />
+                    <input id="input<%= item.id %>" type="text" name="updatedItemTitle" value="<%= item.title %>" hidden />
+                    <button id="done<%= item.id %>" class="done" type="submit" hidden> <img src="/assets/check-solid.svg" /> </button>
+                </form>
+
+                <button id="edit<%= item.id %>" class="edit" type="button" onclick="startEdit('<%= item.id %>')"> <img src="/assets/pencil-solid.svg" /> </button>
+            </div>
+        <% }); %>
+        
+        <form action="/add" method="post">
+            <input type="text" id="newitem" name="newItem" placeholder="Add new task">
+            <button class="add">+</button>
+        </form>
+    </div>
+
+    <script>
+        function startEdit(id) {
+            // Hide the text label
+            document.getElementById("title" + id).setAttribute("hidden", true);
+
+            // Hide the pencil icon
+            document.getElementById("edit" + id).setAttribute("hidden", true);
+
+            // Show the input field
+            document.getElementById("input" + id).removeAttribute("hidden");
+
+            // Show the ✔️ button
+            document.getElementById("done" + id).removeAttribute("hidden");
+        }
+    </script>
+    
+<%- include('partials/footer.ejs') %>
